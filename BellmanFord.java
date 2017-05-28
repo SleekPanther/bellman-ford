@@ -3,15 +3,16 @@ import java.util.*;
 public class BellmanFord {
 	private int[][] memoTable;		//memoization table
 	private int[][] successors;		//bookkeeping to retrace paths
-	private String[] vertexNames = {"S", "B", "C", "D", "T"};	//convert array indexes in graph[][][] to string names
+	private String[] vertexNames;	//convert array indexes in graph[][][] to string names
 	int[][][] graph;		//adjacency list. Each row graph[v] contains a list of edges from v. Each edge graph[v][i] contains 2 numbers: the destination vertex & the edge weight
 	int startVertex;
 	int goalVertex;
 	
-	public void findShortestPaths(int[][][] inputGraph, int inputStartVertex, int inputGoalVertex){
+	public void findShortestPaths(int[][][] inputGraph, String[] inputVertexNames, int inputStartVertex, int inputGoalVertex){
 		this.startVertex = inputStartVertex;
 		this.goalVertex = inputGoalVertex;
 		this.graph=inputGraph;
+		this.vertexNames = inputVertexNames;
 		int vertexCount = graph.length;
 
 		memoTable = new int[vertexCount][vertexCount];
@@ -110,9 +111,23 @@ public class BellmanFord {
 								{ {1, -2} },
 								{ {0, 2}, {3, 7} }
 								};
+		String[] vertexNames = {"S", "a", "b", "c", "T"};
 		int startingVertex =0;
 		int goalVertex = 4;
-		pathFinder.findShortestPaths(inputGraph, startingVertex, goalVertex);
+		System.out.println("Graph 1");
+		pathFinder.findShortestPaths(inputGraph, vertexNames, startingVertex, goalVertex);
+
+		int[][][] inputGraph2 = {{ {5, -3}, {3, -4} },
+								{ {5, 4}, {0, 6} },
+								{ {4, -3}, {5, 2} },
+								{ {2, -2}, {1, -1} },
+								{ {5, 3}, {3, 8} }, 
+								{}	//T has no outgoing edges
+							};
+		String[] vertexNames2 = {"S", "a", "b", "c", "d", "T"};
+		goalVertex = 5;
+		System.out.println("\n\nGraph 2");
+		pathFinder.findShortestPaths(inputGraph2, vertexNames2, startingVertex, goalVertex);
 	}
 
 }
