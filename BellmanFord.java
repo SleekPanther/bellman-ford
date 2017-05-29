@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class BellmanFord {
-	private int[][] memoTable;		//memoization table
-	private int[][] successors;		//bookkeeping to retrace paths
+	private int[][] memoTable;		//memoization table for dynamic programming
+	private int[][] successors;		//bookkeeping to retrace paths, holds the next vertex in the path
 	private String[] vertexNames;	//convert array indexes in graph[][][] to string names
 	int[][][] graph;		//adjacency list. Each row graph[v] contains a list of edges from v. Each edge graph[v][i] contains 2 numbers: the destination vertex & the edge weight
 	int startVertex;
@@ -17,7 +17,7 @@ public class BellmanFord {
 
 		memoTable = new int[vertexCount][vertexCount];
 		successors = new int[vertexCount][vertexCount];
-		for(int vertex=0; vertex<vertexCount; vertex++){
+		for(int vertex=0; vertex<vertexCount; vertex++){	//Fill 1st row (base cases)
 			memoTable[0][vertex] = Integer.MAX_VALUE;	//Most nodes cannot reach the goalVertex using 0 edges, so set it to "infinity"
 			successors[0][vertex] = -1;		//initialize 1st row with no successor
 		}
@@ -38,7 +38,7 @@ public class BellmanFord {
 					possiblePathCosts.add(new ArrayList<Integer>(Arrays.asList(newCost, destinationVertex)));
 				}
 				//find min of all possible paths found
-				int minCost = possiblePathCosts.get(0).get(0);
+				int minCost = possiblePathCosts.get(0).get(0);		//Initialize to 0th value, updated if a smaller 1 is found
 				int successor = possiblePathCosts.get(0).get(1);
 				for(int j=0; j<possiblePathCosts.size(); j++){
 					if(possiblePathCosts.get(j).get(0) < minCost){	//if we find a smaller value, update minCost & successor where that minCost was found
@@ -88,8 +88,8 @@ public class BellmanFord {
 			}
 			else{	//Else actually retrace the path
 				System.out.print(vertexNames[vertex]);		//print start of the path
-				for(int row = successors.length -1; row>=0; row--){		//start from the bottom of successors table decreaseing row each iteration as 1 edge is used up
-					if(nextVertex == goalVertex){		//Reached the end condition
+				for(int row = successors.length -1; row>=0; row--){		//start from the bottom of successors table decreasing row each iteration as 1 edge is used up
+					if(nextVertex == goalVertex){		//Reached the end condition so print goalVertex *& break
 						System.out.println("-->"+vertexNames[goalVertex] + "\t(Cost = "+memoTable[memoTable.length-1][vertex]+")");
 						break;
 					}
@@ -105,7 +105,7 @@ public class BellmanFord {
 	
 	public static void main(String[] args) {
 		BellmanFord pathFinder = new BellmanFord();
-		int[][][] inputGraph = {{ {1, 6}, {2, 7} },
+		int[][][] inputGraph1 = {{ {1, 6}, {2, 7} },
 								{ {3, 5}, {4, -4}, {2, 8} },
 								{ {3, -3}, {4, 9} },
 								{ {1, -2} },
@@ -115,7 +115,7 @@ public class BellmanFord {
 		int startingVertex =0;
 		int goalVertex = 4;
 		System.out.println("Graph 1");
-		pathFinder.findShortestPaths(inputGraph, vertexNames, startingVertex, goalVertex);
+		pathFinder.findShortestPaths(inputGraph1, vertexNames, startingVertex, goalVertex);
 
 		int[][][] inputGraph2 = {{ {5, -3}, {3, -4} },
 								{ {5, 4}, {0, 6} },
