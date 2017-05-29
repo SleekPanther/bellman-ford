@@ -29,10 +29,12 @@ The Dynamic Programming deals with vertices as `int`, but prints the final paths
 - `startingVertex` & a `goalVertex` as `int`. These indexes correspond to `vertexNames[]` and `graph[][][]`, but **S** and **T** don't have to be the 1st & last items in the arrays, they don't even have to be called **"S"** and **"T"**
 
 ## Graph 1 Memoization Table
-<img src="images/graph1-memoization-table.png" width="350">  
+<img src="images/graph1-memoization-table.png" width="350">
+
 For Bellman-Ford, the last row is the most important. This final row holds cost of the shortest path from any vertex to the goal vertex using using at most **n-1** edges. (A value is **infinity** if it cannot be reached)  
 Retracing the actual path is done using the `successors[]`. Each entry in the memoization table also contains the next vertex in the path (**or `-1` if no path has been found**).  
 Follow the path by looking 1 row above and at the column indicated by the successor. Stop when the `goalVertex` is reached
+
 
 ## Code Notes
 - In `findShortestPaths`, **`i` is an edge counter**. It represents how many edges can currently be included in the shortest path
